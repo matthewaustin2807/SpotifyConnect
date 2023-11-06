@@ -4,9 +4,9 @@ import Header from '../components/header'
 
 const PlaylistPage = () => {
     return (
-        <main>
+        <div>
             <Header/>
-        </main>
+        </div>
     )
 }
 
