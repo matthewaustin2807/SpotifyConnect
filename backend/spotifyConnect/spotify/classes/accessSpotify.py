@@ -22,7 +22,8 @@ class Spotify:
 
         return r.json()["access_token"]
 
-    def getPlaylistsID(self):
+
+    def getAllPlaylists(self):
         url = f'https://api.spotify.com/v1/users/{self.userId}/playlists'
         headers = {
             "Authorization" : f'Bearer {self._token}'
@@ -30,13 +31,14 @@ class Spotify:
         r = requests.get(url, headers = headers)
         playlists = []
         counter = 1
-        print("Select the desired playlist: ")
-        for playlist in r.json()["items"]:
-            print(f'{counter} - {playlist["name"]}')
-            playlists.append(playlist)
-            counter += 1
-        chosenPlaylist = int(input("Selecting: "))
-        return playlists[chosenPlaylist - 1]["id"], playlists[chosenPlaylist - 1]["name"]
+        for playlist in r.json()['items']:
+            object = {
+                "id" : playlist['id'],
+                "images" : playlist['images'][0] if len(playlist['images']) != 0 else None,
+                "name" : playlist['name']
+            }
+            playlists.append(object)
+        return playlists
 
 
     def getSongsFromPlaylist(self):
