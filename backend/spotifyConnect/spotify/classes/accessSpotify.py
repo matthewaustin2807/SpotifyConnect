@@ -35,7 +35,10 @@ class Spotify:
             object = {
                 "id" : playlist['id'],
                 "images" : playlist['images'][0] if len(playlist['images']) != 0 else None,
-                "name" : playlist['name']
+                "name" : playlist['name'],
+                "owner" : {
+                    "display_name" : playlist['owner']['display_name']
+                }
             }
             playlists.append(object)
         return playlists
