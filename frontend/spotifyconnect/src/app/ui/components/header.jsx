@@ -13,7 +13,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-const Header = () => {
+const Header = ({height}) => {
     const [drawerState, setDrawerState] = React.useState({
         open: false
     });
@@ -56,7 +56,7 @@ const Header = () => {
       );
 
     return (
-        <div id="headerContainer" className="flex justify-between bg-spotifygreen w-screen h-fit max-w-screen">
+        <div id="headerContainer" className="flex justify-between bg-spotifygreen w-screen max-w-screen" >
             <div id="appTitleContainer" className="place-self-center ml-1">
                 <div id="dashboardIcon" className='inline'>
                     <React.Fragment key={"openDrawer"}>

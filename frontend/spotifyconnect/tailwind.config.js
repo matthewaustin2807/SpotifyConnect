@@ -12,8 +12,10 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        'lightblack' : '#252525',
-        'spotifygreen' : '#1DB954'
+        'lightblack' : '#121212',
+        'spotifygreen' : '#1DB954',
+        'cardBackground' : '#181818',
+        'cardPicture' : '#333333'
       }
     },
   },
