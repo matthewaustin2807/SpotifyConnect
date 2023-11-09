@@ -8,7 +8,6 @@ from .classes.accessSpotify import Spotify
 # Create your views here.
 @api_view(['POST'])
 def displayPlaylists(request):
-    print(request.data)
     userId = request.data['userId']
     spotifyObject = Spotify(userId)
     playlists = spotifyObject.getAllPlaylists()

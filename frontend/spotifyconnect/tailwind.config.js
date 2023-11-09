@@ -13,6 +13,11 @@ module.exports = {
       },
       colors: {
         'lightblack' : '#121212',
+        'playlistDetailStart' : '#565656',
+        'playlistDetailEnd' : '#2A2A2A',
+        'trackTableStart' : '#232323',
+        'trackTableEnd' : '#121212',
+        'trackText' : '#B3B3B3',
         'spotifygreen' : '#1DB954',
         'cardBackground' : '#181818',
         'cardPicture' : '#333333'
