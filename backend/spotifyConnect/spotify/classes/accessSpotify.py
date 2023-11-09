@@ -50,8 +50,6 @@ class Spotify:
         }
         r = requests.get(url, headers=headers)
 
-        print(r.json())
-
         allSongs = []
         totalSongs = r.json()["total"]
         while (len(allSongs) < totalSongs):
@@ -75,7 +73,7 @@ class Spotify:
                 "track_artist" : songs["track"]["artists"][0]["name"],
                 "added_at" : songs['added_at'],
                 "track_duration" : songs['track']['duration_ms'],
-                "images" : songs['track']['album']['images'] if len(songs['track']['album']['images']) != 0 else None
+                "images" : songs['track']['album']['images'][0] if len(songs['track']['album']['images']) != 0 else None
             }
             allTracks.append(track)
             id += 1

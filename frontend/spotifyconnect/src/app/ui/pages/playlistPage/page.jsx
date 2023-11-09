@@ -12,7 +12,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { useSearchParams } from 'next/navigation';
 import Link from "next/link";
 
-const PlaylistPage = ({use}) => {
+const PlaylistPage = () => {
     const params = useSearchParams()
     const [playlists, setPlaylists] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -47,7 +47,16 @@ const PlaylistPage = ({use}) => {
                             {
                                 playlists["playlists"].map((item, index) => (
                                     <ImageListItem key={index} sx={{width:200}}>
-                                        <Link href={`/ui/pages/detailedPlaylistPage?playlistId=${item['id']}`}>
+                                        <Link 
+                                            href={{
+                                                pathname:'/ui/pages/detailedPlaylistPage',
+                                                query:{
+                                                    userId: params.get('userId'),
+                                                    playlistId: item['id'],
+                                                    playlistName: item['name'],
+                                                    image: item['images'] == null ? null : item['images']['url']
+                                                }
+                                            }}>
                                             <PlaylistCard playlistDetails={item}/>
                                         </Link>   
                                     </ImageListItem>

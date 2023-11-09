@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,16 +11,8 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
 
@@ -33,7 +24,7 @@ const headCells = [
         label: '#'
     }, 
     {
-        id: 'image',
+        id: 'images',
         numeric: false,
         disablePadding: false,
         label: ''
@@ -89,6 +80,10 @@ const convertToMinutes = (ms) => {
     let min = Math.round((ms / 1000) / 60);
     let seconds = Math.round((ms / 1000) % 60);
     return `${min}m ${seconds}s`;
+}
+
+const convertToDate = (dateString) => {
+  return dateString.split("T")[0]
 }
 
 const EnhancedTableHead = (props) => {
@@ -159,6 +154,8 @@ const TrackTable = ({rows}) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
+        console.log(order)
+        console.log(orderBy)
     };
 
     const handleSelectAllClick = (event) => {
@@ -204,14 +201,9 @@ const TrackTable = ({rows}) => {
       // Avoid a layout jump when reaching the last page with empty rows.
       const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
     
-    //   const visibleRows = React.useMemo(
-    //     () =>
-    //     rows.slice().sort(getComparator(order, orderBy)).slice(
-    //         page * rowsPerPage,
-    //         page * rowsPerPage + rowsPerPage
-    //     ),
-    //     [order, orderBy, page, rowsPerPage],
-    //   );
+      const visibleRows = React.useMemo(
+        () => rows.slice().sort(getComparator(order, orderBy)), 
+      [order, orderBy, page, rowsPerPage]);
 
     return ( 
         <Box sx={{ width: '95%', ml:4}}>
@@ -232,7 +224,7 @@ const TrackTable = ({rows}) => {
                             rowCount={rows.length}
                         />
                         <TableBody >
-                            {rows.map((row, index) => {
+                            {visibleRows.map((row, index) => {
                                 const isItemSelected = isSelected(row.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
                                 return (
@@ -260,12 +252,12 @@ const TrackTable = ({rows}) => {
                                         </TableCell>
                                         <TableCell className="text-trackText w-16 border-0" align='left' id={labelId}>{row.id}</TableCell>
                                         <TableCell className='flex w-16 border-0'>
-                                            <img src={row.image} className='w-8 h-8'/>
+                                            <img src={row.images.url} className='w-8 h-8'/>
                                         </TableCell>
                                         <TableCell className="text-trackText border-0" align='left'>{row.track_name}</TableCell>
                                         <TableCell className="text-trackText border-0" align="left">{row.track_artist}</TableCell>
                                         <TableCell className="text-trackText border-0" align="left">{row.track_album}</TableCell>
-                                        <TableCell className="text-trackText border-0" align="left">{row.added_at}</TableCell>
+                                        <TableCell className="text-trackText border-0" align="left">{convertToDate(row.added_at)}</TableCell>
                                         <TableCell className="text-trackText border-0" align="left">{convertToMinutes(row.track_duration)}</TableCell>
                                     </TableRow>
                                 );

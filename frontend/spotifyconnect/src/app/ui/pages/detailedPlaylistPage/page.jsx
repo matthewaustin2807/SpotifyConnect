@@ -3,12 +3,13 @@
 import React from 'react';
 import Header from '../../components/header';
 import { Button } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import TrackTable from '../../components/trackTable';
 import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
+import Link from 'next/link'
 
 const DetailedPlaylistPage = () => {
-    const playlistName = 'Touch Your Feels'
-    const playlistImg = 'https://image-cdn-ak.spotifycdn.com/image/ab67706c0000bebb2674542542fc567bf04d5947'
     const playlistTracks = [
         {
             'id': 1,
@@ -74,16 +75,37 @@ const DetailedPlaylistPage = () => {
             "track_duration" : 180000 //in ms
         },
     ]
+    const [tracks, setTracks] = React.useState([])
+    const [isLoading, setIsLoading] = React.useState(true)
 
     const params = useSearchParams();
     const playlistId = params.get('playlistId');
+    const userId = params.get('userId');
+    const playlistImg = params.get('image');
+    const playlistName = params.get('playlistName')
 
-    return ( 
+    React.useEffect(() => {
+        fetchData()
+    },[])
+
+    const fetchData = async () => {
+        await axios.get(`http://127.0.0.1:8000/api/playlistDetails/?userId=${userId}&playlistId=${playlistId}`)
+            .then((response) => {
+                setTracks(response.data.tracks)
+                setIsLoading(false)
+                console.log(tracks)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+    
+    return isLoading ? (<div>Loading</div>) : ( 
         <div className='flex flex-col justify-start h-screen bg-lightblack'>
             <div>
                 <Header userId={"matthewaustin2807"}/>
             </div>
-            <div className='flex flex-col h-screen'>
+            <div className='flex flex-col h-screen max-h-fit'>
                 <div id="playlist-description" className='flex w-screen h-2/6 bg-gradient-to-b from-playlistDetailStart to-playlistDetailEnd'>
                     <div id='playlist-image' className='my-3 flex justify-center items-center basis-3/12'>
                         <img src={playlistImg} className='w-48 h-48 rounded-lg'/>
@@ -91,16 +113,32 @@ const DetailedPlaylistPage = () => {
                     <div id='playlist-title' className='flex flex-col justify-end basis-7/12'>
                         <h1 className='text-8xl mb-5 text-slate-50 font-bold'>{playlistName}</h1>
                     </div>
-                    <div id='import-all' className='flex justify-center basis-2/12'>
-                        <Button variant="contained" className='bg-spotifygreen w-7/12 self-end mb-8'>
-                            Import All
-                        </Button>
+                    <div id='import-all' className='flex flex-col justify-between basis-2/12'>
+                        <div className='self-end mr-4 mt-3'>
+                            <Link href={{
+                                pathname:'/ui/pages/playlistPage',
+                                query: {
+                                    userId: params.get('userId')
+                                }
+                            }}>
+                                
+                                <Button className='font-bold'>
+                                    <ArrowBackIosNewIcon/> 
+                                    Back
+                                </Button>
+                            </Link>
+                        </div>
+                        <div>
+                            <Button variant="contained" className='bg-spotifygreen w-7/12 mb-5'>
+                                Import All
+                            </Button>
+                        </div>
                     </div>
                 </div>
-                <div id="playlist-tracks" className='bg-gradient-to-b from-trackTableStart to-trackTableEnd border-2 border-lightblack w-screen h-screen'>
-                    <TrackTable rows={playlistTracks}/>
+                <div id="playlist-tracks" className='bg-gradient-to-b from-trackTableStart to-trackTableEnd border-2 border-lightblack w-screen h-fit max-h-fit'>
+                    <TrackTable rows={tracks}/>
                     <div id='import-selected' className='flex'>
-                        <Button variant="contained" className='bg-spotifygreen w-38 ml-7 mt-3'>
+                        <Button variant="contained" className='bg-spotifygreen w-38 ml-7 mt-1 mb-4'>
                             Import Selected
                         </Button>
                     </div>
