@@ -12,10 +12,40 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Link from 'next/link';
 
-const Header = ({height}) => {
+const Header = ({userId}) => {
+    const stringToColor = (string) => {
+        let hash = 0;
+        let i;
+
+        /* eslint-disable no-bitwise */
+        for (i = 0; i < string.length; i += 1) {
+            hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+
+        let color = '#';
+
+        for (i = 0; i < 3; i += 1) {
+            const value = (hash >> (i * 8)) & 0xff;
+            color += `00${value.toString(16)}`.slice(-2);
+        }
+        /* eslint-enable no-bitwise */
+
+        return color;
+    }
+
+    const stringAvatar = (name) => {
+        return {
+            sx: {
+              bgcolor: stringToColor(name),
+            },
+            children: `${name.split(' ')[0][0]}`,
+        };
+    }
+
     const [drawerState, setDrawerState] = React.useState({
-        open: false
+        left: false
     });
     
     const toggleDrawer = (anchor, open) => (event) => {
@@ -35,8 +65,8 @@ const Header = ({height}) => {
         >
           <List>
            <div className='flex justify-start'>
-                <Avatar className="m-5 place-self-center">M</Avatar>
-                <h2 className='place-self-center'>matthewaustin2807</h2>
+                <Avatar className="m-5 place-self-center" {...stringAvatar(userId)}/>
+                <h2 className='place-self-center'>{userId}</h2>
            </div>
           </List>
           <Divider />
@@ -56,29 +86,33 @@ const Header = ({height}) => {
       );
 
     return (
-        <div id="headerContainer" className="flex justify-between bg-spotifygreen w-screen max-w-screen" >
+        <div id="headerContainer" className="sticky flex justify-between bg-spotifygreen w-screen max-w-screen" >
             <div id="appTitleContainer" className="place-self-center ml-1">
                 <div id="dashboardIcon" className='inline'>
-                    <React.Fragment key={"openDrawer"}>
-                        <Button onClick={toggleDrawer("openDrawer", true)}>
+                    <React.Fragment key={"left"}>
+                        <Button onClick={toggleDrawer("left", true)}>
                             <MenuIcon className="text-slate-50"/>
                         </Button>
                         <Drawer
-                            anchor={"openDrawer"}
-                            open={drawerState["openDrawer"]}
-                            onClose={toggleDrawer("openDrawer", false)}
+                            anchor={"left"}
+                            open={drawerState["left"]}
+                            onClose={toggleDrawer("left", false)}
                         >
-                            {list("openDrawer")}
+                            {list("left")}
                         </Drawer>
                     </React.Fragment>
                 </div>                 
-                <Button className="text-slate-50">
-                    <h4 className="text-xl inline font-black">Spotify</h4>
-                    <h4 className="text-xl inline font-thin">Connect!</h4>
+                <Button>
+                    <h4 className="text-slate-50 text-xl inline font-black">Spotify</h4>
+                    <h4 className="text-slate-50 text-xl inline font-thin">Connect!</h4>
                 </Button>
             </div>
             <div id="logOutContainer" className="place-self-center m-3">
-                <Button className="text-slate-50">Log Out</Button>
+                <Button>
+                    <Link className="text-slate-50" href={`/ui/pages/landingPage`}>
+                        Log Out
+                    </Link>
+                </Button>
             </div>
         </div>
     )

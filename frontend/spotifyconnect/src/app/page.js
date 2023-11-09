@@ -1,11 +1,11 @@
 import PlaylistCard from './ui/components/playlistCard';
-import LandingPage from './ui/pages/landingPage'
-import PlaylistPage from './ui/pages/playlistPage';
+import LandingPage from './ui/pages/landingPage/page'
+import PlaylistPage from './ui/pages/playlistPage/page';
 
 const Page = () => {
   return (
     <div className="overflow-hidden">
-     <PlaylistPage/>
+      <LandingPage/>
     </div>
 
   )
