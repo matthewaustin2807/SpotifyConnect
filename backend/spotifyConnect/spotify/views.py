@@ -12,3 +12,12 @@ def displayPlaylists(request):
     spotifyObject = Spotify(userId)
     playlists = spotifyObject.getAllPlaylists()
     return Response({'playlists': playlists})
+
+@api_view(['GET'])
+def getPlaylistDetails(request):
+    playlistId = request.GET['playlistId']
+    userId = request.GET['userId']
+    spotifyObject = Spotify(userId)
+    allTracks = spotifyObject.getSongsFromPlaylist(playlistId)
+    return Response({'tracks': allTracks})
+
