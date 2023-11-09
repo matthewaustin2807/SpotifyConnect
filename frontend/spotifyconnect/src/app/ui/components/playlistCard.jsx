@@ -8,8 +8,8 @@ const PlaylistCard = ({playlistDetails}) => {
             {
                 playlistDetails["images"] != null ? 
                 <img src={playlistDetails["images"]["url"]} className="bg-cardPicture w-48 h-44 mt-5 place-self-center rounded-sm"/> :
-                <div className="flex bg-cardPicture w-48 h-44 mt-5 place-self-center rounded-sm">
-                    <GraphicEqSharpIcon sx={{width:100, height:100}} className="mx-11 place-self-center"/>
+                <div className="flex justify-center items-center bg-cardPicture w-48 h-44 mt-5 place-self-center rounded-sm">
+                    <GraphicEqSharpIcon sx={{width:100, height:100}} className=""/>
                 </div>
             }
             <h3 className="ml-4 mt-3 text-slate-50 font-bold">{playlistDetails["name"]}</h3>
