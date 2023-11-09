@@ -3,6 +3,7 @@
 import React from 'react';
 import Header from '../../components/header';
 import { Button } from '@mui/material';
+import GraphicEqSharpIcon from '@mui/icons-material/GraphicEqSharp';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import TrackTable from '../../components/trackTable';
 import { useSearchParams } from 'next/navigation';
@@ -108,7 +109,13 @@ const DetailedPlaylistPage = () => {
             <div className='flex flex-col h-screen max-h-fit'>
                 <div id="playlist-description" className='flex w-screen h-2/6 bg-gradient-to-b from-playlistDetailStart to-playlistDetailEnd'>
                     <div id='playlist-image' className='my-3 flex justify-center items-center basis-3/12'>
-                        <img src={playlistImg} className='w-48 h-48 rounded-lg'/>
+                        {
+                            playlistImg != ""
+                            ? <img src={playlistImg} className='w-48 h-48 rounded-lg'/> 
+                            : <div className="flex justify-center items-center bg-cardPicture w-48 h-48 place-self-center rounded-lg">
+                                <GraphicEqSharpIcon sx={{width:100, height:100}}/>
+                            </div>
+                        } 
                     </div>
                     <div id='playlist-title' className='flex flex-col justify-end basis-7/12'>
                         <h1 className='text-8xl mb-5 text-slate-50 font-bold'>{playlistName}</h1>
@@ -120,8 +127,7 @@ const DetailedPlaylistPage = () => {
                                 query: {
                                     userId: params.get('userId')
                                 }
-                            }}>
-                                
+                            }}>   
                                 <Button className='font-bold'>
                                     <ArrowBackIosNewIcon/> 
                                     Back
