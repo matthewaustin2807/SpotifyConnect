@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Header from '../../components/header';
 import { Button } from '@mui/material';
 import TrackTable from '../../components/trackTable';
+import { useSearchParams } from 'next/navigation';
 
 const DetailedPlaylistPage = () => {
     const playlistName = 'Touch Your Feels'
@@ -71,6 +74,9 @@ const DetailedPlaylistPage = () => {
             "track_duration" : 180000 //in ms
         },
     ]
+
+    const params = useSearchParams();
+    const playlistId = params.get('playlistId');
 
     return ( 
         <div className='flex flex-col justify-start h-screen bg-lightblack'>

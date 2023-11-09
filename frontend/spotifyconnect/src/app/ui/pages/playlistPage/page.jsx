@@ -10,6 +10,7 @@ import { ImageList, ImageListItem, Stack, Button, Box } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { DataGrid } from '@mui/x-data-grid'
 import { useSearchParams } from 'next/navigation';
+import Link from "next/link";
 
 const PlaylistPage = ({use}) => {
     const params = useSearchParams()
@@ -46,7 +47,9 @@ const PlaylistPage = ({use}) => {
                             {
                                 playlists["playlists"].map((item, index) => (
                                     <ImageListItem key={index} sx={{width:200}}>
-                                        <PlaylistCard playlistDetails={item}/>
+                                        <Link href={`/ui/pages/detailedPlaylistPage?playlistId=${item['id']}`}>
+                                            <PlaylistCard playlistDetails={item}/>
+                                        </Link>   
                                     </ImageListItem>
                                 ))
                             }
