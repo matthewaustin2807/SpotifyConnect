@@ -3,6 +3,7 @@ import LandingPage from './ui/pages/landingPage/page'
 import PlaylistPage from './ui/pages/playlistPage/page';
 import DetailedPlaylistPage from './ui/pages/detailedPlaylistPage/page';
 import TrackTable from './ui/components/trackTable';
+import Loading from './ui/pages/loadingPage/page';
 
 const Page = () => {
 

@@ -11,6 +11,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { DataGrid } from '@mui/x-data-grid'
 import { useSearchParams } from 'next/navigation';
 import Link from "next/link";
+import LoadingPage from '../loadingPage/page';
 
 const PlaylistPage = () => {
     const params = useSearchParams()
@@ -34,7 +35,7 @@ const PlaylistPage = () => {
         })
     }
 
-    return isLoading ? (<div>Loading</div>) : (
+    return isLoading ? (<LoadingPage/>) : (
         <div className="flex flex-col justify-start max-h-screen h-screen bg-lightblack">
             <div>
                 <Header userId={params.get('userId')}/>

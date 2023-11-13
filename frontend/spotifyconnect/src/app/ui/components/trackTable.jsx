@@ -14,6 +14,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { visuallyHidden } from '@mui/utils';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 
 const headCells = [
@@ -120,7 +121,7 @@ const EnhancedTableHead = (props) => {
                   direction={orderBy === headCell.id ? order : 'asc'}
                   onClick={createSortHandler(headCell.id)}
                 >
-                  {headCell.label}
+                  {(headCell.id == 'track_duration') ? <AccessTimeIcon className="ml-3"/> : headCell.label}
                   {orderBy === headCell.id ? (
                     <Box component="span" sx={visuallyHidden}>
                       {order === 'desc' ? 'sorted descending' : 'sorted ascending'}

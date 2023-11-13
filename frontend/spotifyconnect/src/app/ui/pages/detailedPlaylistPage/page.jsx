@@ -9,6 +9,7 @@ import TrackTable from '../../components/trackTable';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link'
+import LoadingPage from '../loadingPage/page';
 
 const DetailedPlaylistPage = () => {
     const playlistTracks = [
@@ -101,7 +102,7 @@ const DetailedPlaylistPage = () => {
             })
     }
     
-    return isLoading ? (<div>Loading</div>) : ( 
+    return isLoading ? (<LoadingPage/>) : ( 
         <div className='flex flex-col justify-start h-screen bg-lightblack'>
             <div>
                 <Header userId={"matthewaustin2807"}/>
