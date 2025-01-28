@@ -22,25 +22,28 @@ class Spotify:
 
         return r.json()["access_token"]
 
-    def getPlaylistsID(self):
+
+    def getAllPlaylists(self):
         url = f'https://api.spotify.com/v1/users/{self.userId}/playlists'
         headers = {
             "Authorization" : f'Bearer {self._token}'
         }
         r = requests.get(url, headers = headers)
         playlists = []
-        counter = 1
-        print("Select the desired playlist: ")
-        for playlist in r.json()["items"]:
-            print(f'{counter} - {playlist["name"]}')
-            playlists.append(playlist)
-            counter += 1
-        chosenPlaylist = int(input("Selecting: "))
-        return playlists[chosenPlaylist - 1]["id"], playlists[chosenPlaylist - 1]["name"]
+        for playlist in r.json()['items']:
+            object = {
+                "id" : playlist['id'],
+                "images" : playlist['images'][0] if len(playlist['images']) != 0 else None,
+                "name" : playlist['name'],
+                "owner" : {
+                    "display_name" : playlist['owner']['display_name']
+                }
+            }
+            playlists.append(object)
+        return playlists
 
 
-    def getSongsFromPlaylist(self):
-        playlistId, playlistName = self.getPlaylistsID()
+    def getSongsFromPlaylist(self, playlistId):
         url = f'https://api.spotify.com/v1/playlists/{playlistId}/tracks?limit=50'
         headers = {
             "Authorization" : f'Bearer {self._token}'
@@ -48,25 +51,31 @@ class Spotify:
         r = requests.get(url, headers=headers)
 
         allSongs = []
-
         totalSongs = r.json()["total"]
         while (len(allSongs) < totalSongs):
             offset = len(allSongs)
             payload = {
                 "limit" : 50, 
                 "offset" : offset,
-                "fields" : "items(track(artists(name), name))"
+                "fields" : "items(added_at, track(album(name, images), artists(name), duration_ms,  name))"
             }
             r = requests.get(url, headers=headers, params=payload)
             allSongs.extend(r.json()["items"])
 
-        artistTitle = {}
+        allTracks = []
 
-        for song in allSongs:
-            artist = song["track"]["artists"][0]["name"]
-            if (artist not in artistTitle.keys()):
-                artistTitle[artist] = [song["track"]["name"]]
-            else:
-                artistTitle[artist].append(song["track"]["name"])
-        
-        return artistTitle, playlistName.replace(" ", "")
+        id = 1
+        for songs in allSongs:
+            track = {
+                "id": id,
+                "track_album" : songs['track']['album']['name'] if songs['track']['album'] != None else None,
+                "track_name" : songs['track']['name'],
+                "track_artist" : songs["track"]["artists"][0]["name"],
+                "added_at" : songs['added_at'],
+                "track_duration" : songs['track']['duration_ms'],
+                "images" : songs['track']['album']['images'][0] if len(songs['track']['album']['images']) != 0 else None
+            }
+            allTracks.append(track)
+            id += 1
+
+        return allTracks
